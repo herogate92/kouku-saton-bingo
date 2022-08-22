@@ -1,4 +1,4 @@
-import React, {useState, useMemo, useEffect} from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import './App.scss';
 import Container from '@mui/material/Container';
 import Button from '@mui/material/Button';
@@ -34,39 +34,39 @@ function App() {
   const scoreWeight = [1e10, 2e9, 1e7, 5e4, 5e4 * 10 * preferSkull + 1e4, 100, 1];
 
   const transM = (a) => a[0].map((x, c) => a.map(r => r[c]))
-  
+
   const checkBingo = (a) => ({
-    row: a.map(x => x.reduce((p , y) => (p && y), true)),
-    col: transM(a).map(x => x.reduce((p , y) => (p && y), true)),
+    row: a.map(x => x.reduce((p, y) => (p && y), true)),
+    col: transM(a).map(x => x.reduce((p, y) => (p && y), true)),
     diS: a.reduce((p, x, i) => (p && a[i][i]), true),
-    diD:a.reduce((p, x, i) => (p && a[i][4 -i]), true)
+    diD: a.reduce((p, x, i) => (p && a[i][4 - i]), true)
   })
 
   const isRed = (checkRes, x, y) => {
-    if(checkRes.row[x] || checkRes.col[y]) return true;
-    else if(x === y && checkRes.diS) return true;
-    else if(x + y === 4 && checkRes.diD) return true;
+    if (checkRes.row[x] || checkRes.col[y]) return true;
+    else if (x === y && checkRes.diS) return true;
+    else if (x + y === 4 && checkRes.diD) return true;
     return false;
   }
 
   const isSkull = (b, x, y) => {
-    if(x < 0 || y < 0 || x > 4 || y > 4) return true;
-    if(isHell && x === hellPos[0] && y === hellPos[1]) return true;
-    if(b[x][y]) return true;
+    if (x < 0 || y < 0 || x > 4 || y > 4) return true;
+    if (isHell && x === hellPos[0] && y === hellPos[1]) return true;
+    if (b[x][y]) return true;
     return false;
   }
 
   const isIsolate = (b, x, y) => {
     const isSk = (tx, ty) => {
-      if(isSkull(b, tx, ty)) return 1;
+      if (isSkull(b, tx, ty)) return 1;
       return 0
     }
-    return isSk(x + 1, y + 1) + isSk(x + 1, y) + isSk(x + 1, y - 1) + isSk(x, y + 1) + isSk(x, y - 1) + isSk(x - 1, y + 1) + isSk(x - 1, y) +isSk(x - 1, y - 1)
+    return isSk(x + 1, y + 1) + isSk(x + 1, y) + isSk(x + 1, y - 1) + isSk(x, y + 1) + isSk(x, y - 1) + isSk(x - 1, y + 1) + isSk(x - 1, y) + isSk(x - 1, y - 1)
   }
 
   const isHellOver = (b) => {
-    if(!isHell) return false;
-    if(hellPos[0] < 0 || hellPos[1] < 0) return false;
+    if (!isHell) return false;
+    if (hellPos[0] < 0 || hellPos[1] < 0) return false;
     return b[hellPos[0]][hellPos[1]];
   }
 
@@ -78,8 +78,8 @@ function App() {
       [[0, 0], [0, 1], [0, -1], [1, 0], [-1, 0]].forEach(d => {
         const tx = a[0] + d[0];
         const ty = a[1] + d[1];
-        if(0 <= tx && tx < 5 && 0 <= ty && ty < 5) {
-          if(!isRed(nowBingo, tx, ty)) res[tx][ty] = !res[tx][ty];
+        if (0 <= tx && tx < 5 && 0 <= ty && ty < 5) {
+          if (!isRed(nowBingo, tx, ty)) res[tx][ty] = !res[tx][ty];
         }
       })
     })
@@ -87,18 +87,18 @@ function App() {
   }
 
   const clickBingo = (x, y) => {
-    if(x < 0 || x >= 5 || y < 0 || y >= 5) return;
-    if(isHell && round === 0) {
+    if (x < 0 || x >= 5 || y < 0 || y >= 5) return;
+    if (isHell && round === 0) {
       const res = bingo.slice(0, round + 1);
       res.push(JSON.parse(JSON.stringify(bingo[round])));
       setHellPos([x, y])
       setBingo(res);
       setRound(round + 1);
-      if(warnMsg !== "") setWarnMsg("");
+      if (warnMsg !== "") setWarnMsg("");
     }
-    else if(round < 2) {
+    else if (round < 2) {
       const res = bingo.slice(0, round + 1);
-      if(isSkull(res[round], x, y)) {
+      if (isSkull(res[round], x, y)) {
         setWarnMsg("다른 위치에 놓아주세요!");
       }
       else {
@@ -106,21 +106,21 @@ function App() {
         res[round + 1][x][y] = true;
         setBingo(res);
         setRound(round + 1);
-        if(warnMsg !== "") setWarnMsg("");
+        if (warnMsg !== "") setWarnMsg("");
       }
     }
     else {
-      if(round % 3 === 1 && isInanna) setIsInanna(false);
+      if (round % 3 === 1 && isInanna) setIsInanna(false);
       const res = bingo.slice(0, round + 1);
       res.push(placeBingo(bingo[round], [[x, y]]));
       setBingo(res);
       setRound(round + 1);
-      if(warnMsg !== "") setWarnMsg("");
+      if (warnMsg !== "") setWarnMsg("");
     }
   }
 
   const resetBingo = () => {
-    if(warnMsg !== "") setWarnMsg("");
+    if (warnMsg !== "") setWarnMsg("");
     setRound(0);
     setBingo([[
       [false, false, false, false, false],
@@ -134,8 +134,8 @@ function App() {
   }
 
   const cancleBingo = () => {
-    if(warnMsg !== "") setWarnMsg("");
-    if(round > 0) setRound(round - 1);
+    if (warnMsg !== "") setWarnMsg("");
+    if (round > 0) setRound(round - 1);
   }
 
   const scorePlace = (b) => {
@@ -143,7 +143,7 @@ function App() {
     const nowBingo = checkBingo(b);
     const check = [
       [false, false, false, false, false],
-      [false,  true, false, false, false],
+      [false, true, false, false, false],
       [false, false, false, false, false],
       [false, false, false, false, false],
       [false, false, false, false, false],
@@ -151,25 +151,25 @@ function App() {
     const bfsq = [];
 
     const isc = [
-      [  2,   2,   2,   2, 0.5],
-      [  2,  20,  10,   2, 0.5],
-      [  2,  10,   7,   2, 0.5],
-      [  2,   2,   2,   2, 0.5],
+      [2, 2, 2, 2, 0.5],
+      [2, 20, 10, 2, 0.5],
+      [2, 10, 7, 2, 0.5],
+      [2, 2, 2, 2, 0.5],
       [0.5, 0.5, 0.5, 0.5, 0.5],
     ]
 
     bfsq.push([1, 1]);
-    for(let s = 0; s < bfsq.length; s++) {
+    for (let s = 0; s < bfsq.length; s++) {
       const tx = bfsq[s][0];
       const ty = bfsq[s][1];
-      if(!isRed(nowBingo, tx, ty)) res[0] += 1;
-      if(!isSkull(b, tx, ty)) res[1]+= isc[tx][ty];
-      if(!isRed(nowBingo, tx, ty)) {
+      if (!isRed(nowBingo, tx, ty)) res[0] += 1;
+      if (!isSkull(b, tx, ty)) res[1] += isc[tx][ty];
+      if (!isRed(nowBingo, tx, ty)) {
         [[1, 0], [-1, 0], [0, 1], [0, -1]].forEach(d => {
           const nx = tx + d[0];
           const ny = ty + d[1];
-          if(0 <= nx && nx < 5 && 0 <= ny && ny < 5) {
-            if((!check[nx][ny]) && (!isRed(nowBingo, nx, ny))) {
+          if (0 <= nx && nx < 5 && 0 <= ny && ny < 5) {
+            if ((!check[nx][ny]) && (!isRed(nowBingo, nx, ny))) {
               check[nx][ny] = true;
               bfsq.push([nx, ny]);
             }
@@ -179,8 +179,8 @@ function App() {
     }
     [0, 1, 2, 3, 4].forEach(i => {
       [0, 1, 2, 3, 4].forEach(j => {
-        if(!isRed(nowBingo, i, j)) res[2] += 1;
-        if(!isSkull(b, i, j)) res[3]+= isc[i][j];
+        if (!isRed(nowBingo, i, j)) res[2] += 1;
+        if (!isSkull(b, i, j)) res[3] += isc[i][j];
       })
     });
     return res;
@@ -191,16 +191,16 @@ function App() {
     // 3빙고, 빨강, 가용, 빈가용, 해골, 총, 총빈
     const nowPlace = placeBingo(bingo[round], al);
     const nowBingo = checkBingo(nowPlace);
-    for(let i = 0; i < 5; i++) {
-      for(let j = 0; j < 5; j++) {
+    for (let i = 0; i < 5; i++) {
+      for (let j = 0; j < 5; j++) {
         const score = [0, 0, 0, 0, 0, 0, 0];
         const testPlace = placeBingo(nowPlace, [[i, j]]);
         const testBingo = checkBingo(testPlace);
-        if(!isHellOver(testPlace)) {
-          if(JSON.stringify(nowBingo) !== JSON.stringify(testBingo)) score[0] = 1;
-          if(!isRed(nowBingo, i, j)) score[1] = 1;
-          if(!isSkull(nowPlace, i, j)) score[4] = 1;
-          if(isIsolate(nowPlace, i, j) === 8) score[4] = 0;
+        if (!isHellOver(testPlace)) {
+          if (JSON.stringify(nowBingo) !== JSON.stringify(testBingo)) score[0] = 1;
+          if (!isRed(nowBingo, i, j)) score[1] = 1;
+          if (!isSkull(nowPlace, i, j)) score[4] = 1;
+          if (isIsolate(nowPlace, i, j) === 8) score[4] = 0;
           const sp = scorePlace(testPlace);
           score[2] = sp[0];
           score[3] = sp[1];
@@ -208,7 +208,7 @@ function App() {
           score[6] = sp[3];
         }
         let sc = 0;
-        for(let k = 0; k < 7; k++) sc += score[k] * scoreWeight[k];
+        for (let k = 0; k < 7; k++) sc += score[k] * scoreWeight[k];
         res.push({
           x: i,
           y: j,
@@ -224,14 +224,14 @@ function App() {
     // 빨강, 가용, 빈가용, 해골, 총, 총빈
     const nowPlace = placeBingo(bingo[round], al);
     const nowBingo = checkBingo(nowPlace);
-    for(let i = 0; i < 5; i++) {
-      for(let j = 0; j < 5; j++) {
+    for (let i = 0; i < 5; i++) {
+      for (let j = 0; j < 5; j++) {
         const score = [0, 0, 0, 0, 0, 0, 0];
         const testPlace = placeBingo(nowPlace, [[i, j]]);
-        if(!isHellOver(testPlace)) {
-          if(!isRed(nowBingo, i, j)) score[0] = 1;
-          if(!isSkull(nowPlace, i, j)) score[3] = 1;
-          if(isIsolate(nowPlace, i, j) === 8) score[3] = 0;
+        if (!isHellOver(testPlace)) {
+          if (!isRed(nowBingo, i, j)) score[0] = 1;
+          if (!isSkull(nowPlace, i, j)) score[3] = 1;
+          if (isIsolate(nowPlace, i, j) === 8) score[3] = 0;
           const sp = scorePlace(testPlace);
           score[1] = sp[0];
           score[2] = sp[1];
@@ -239,7 +239,7 @@ function App() {
           score[5] = sp[3];
         }
         let sc = 0;
-        for(let k = 0; k < 6; k++) sc += score[k] * scoreWeight[k + 1];
+        for (let k = 0; k < 6; k++) sc += score[k] * scoreWeight[k + 1];
         const scThird = isHellOver(testPlace) ? 0 : scoreThird([...al, [i, j]]).reduce((p, x) => Math.max(x.score, p), -1);
         res.push({
           x: i,
@@ -256,14 +256,14 @@ function App() {
     // 빨강, 가용, 빈가용, 해골, 총, 총빈
     const nowPlace = bingo[round];
     const nowBingo = checkBingo(nowPlace);
-    for(let i = 0; i < 5; i++) {
-      for(let j = 0; j < 5; j++) {
+    for (let i = 0; i < 5; i++) {
+      for (let j = 0; j < 5; j++) {
         const score = [0, 0, 0, 0, 0, 0, 0];
         const testPlace = placeBingo(nowPlace, [[i, j]]);
-        if(!isHellOver(testPlace)) {
-          if(!isRed(nowBingo, i, j)) score[0] = 1;
-          if(!isSkull(nowPlace, i, i)) score[3] = 1;
-          if(isIsolate(nowPlace, i, j) === 8) score[3] = 0;
+        if (!isHellOver(testPlace)) {
+          if (!isRed(nowBingo, i, j)) score[0] = 1;
+          if (!isSkull(nowPlace, i, i)) score[3] = 1;
+          if (isIsolate(nowPlace, i, j) === 8) score[3] = 0;
           const sp = scorePlace(testPlace);
           score[1] = sp[0];
           score[2] = sp[1];
@@ -271,7 +271,7 @@ function App() {
           score[5] = sp[3];
         }
         let sc = 0;
-        for(let k = 0; k < 6; k++) sc += score[k] * scoreWeight[k + 1];
+        for (let k = 0; k < 6; k++) sc += score[k] * scoreWeight[k + 1];
         const scSecond = isHellOver(testPlace) ? 0 : scoreSecond([[i, j]]).reduce((p, x) => Math.max(x.score, p), -1);
         res.push({
           x: i,
@@ -286,25 +286,25 @@ function App() {
   const candidateList = () => {
     const res = [];
     let score;
-    if(round % 3 === 2) score = scoreFirst();
-    else if(round % 3 === 0) score = scoreSecond([]);
+    if (round % 3 === 2) score = scoreFirst();
+    else if (round % 3 === 0) score = scoreSecond([]);
     else score = scoreThird([]);
 
     const cmp = (x, y) => y.score - x.score;
     const cmpI = (x, y) => (y.score % 1e10) - (x.score % 1e10);
 
-    if(!isInanna) score = score.filter(x => x.score >= 1e10);
+    if (!isInanna) score = score.filter(x => x.score >= 1e10);
 
-    if(isInanna) score.sort(cmpI);
+    if (isInanna) score.sort(cmpI);
     else score.sort(cmp);
 
-    if(score.length > 0) res.push([score[0].x, score[0].y]);
-    if(score.length > 1) res.push([score[1].x, score[1].y]);
+    if (score.length > 0) res.push([score[0].x, score[0].y]);
+    if (score.length > 1) res.push([score[1].x, score[1].y]);
 
-    if(score.length > 2) { 
-      if(isSkull(bingo[round], score[0].x, score[0].y) && isSkull(bingo[round], score[1].x, score[1].y)) {
+    if (score.length > 2) {
+      if (isSkull(bingo[round], score[0].x, score[0].y) && isSkull(bingo[round], score[1].x, score[1].y)) {
         const empt = score.filter(x => !isSkull(bingo[round], x.x, x.y));
-        if(empt.length > 0) {
+        if (empt.length > 0) {
           res.push([empt[0].x, empt[0].y]);
         }
         else {
@@ -322,30 +322,30 @@ function App() {
     const res = [];
     const nowBingo = checkBingo(bingo[round]);
     const candi = candidateList();
-    if(round > 1 && candi.length === 0) setWarnMsg("무적빙고 불가능! 이난나 or GG");
-    if(isHellOver(bingo[round])) setWarnMsg("특수 타일에 해골이...GG");
+    if (round > 1 && candi.length === 0) setWarnMsg("무적빙고 불가능! 이난나 or GG");
+    if (isHellOver(bingo[round])) setWarnMsg("특수 타일에 해골이...GG");
 
-    for(let i = 0; i < 5; i++) {
+    for (let i = 0; i < 5; i++) {
       const tds = []
-      for(let j = 0; j < 5; j++) {
+      for (let j = 0; j < 5; j++) {
         let inner;
-        if(round !== 0 && i === hellPos[0] && j === hellPos[1]) inner = <img className="bingo-image nodrag" src={hellSkullImage} alt=""/>;
-        else if(isRed(nowBingo, i, j)) inner = <img className="bingo-image nodrag" src={redSkullImage} alt=""/>;
-        else if (bingo[round][i][j]) inner = <img className="bingo-image nodrag" src={skullImage} alt=""/>;
+        if (round !== 0 && i === hellPos[0] && j === hellPos[1]) inner = <img className="bingo-image nodrag" src={hellSkullImage} alt="" />;
+        else if (isRed(nowBingo, i, j)) inner = <img className="bingo-image nodrag" src={redSkullImage} alt="" />;
+        else if (bingo[round][i][j]) inner = <img className="bingo-image nodrag" src={skullImage} alt="" />;
         else inner = null;
 
         let cls = "";
-        if(round > 1) {
-          if(candi.length > 0 && i === candi[0][0] && j === candi[0][1]) cls = "bingo-candidate-1";
-          else if(candi.length > 1 && i === candi[1][0] && j === candi[1][1]) cls = "bingo-candidate-2";
-          else if(candi.length > 2 && i === candi[2][0] && j === candi[2][1]) cls = "bingo-candidate-3";        
+        if (round > 1) {
+          if (candi.length > 0 && i === candi[0][0] && j === candi[0][1]) cls = "bingo-candidate-1";
+          else if (candi.length > 1 && i === candi[1][0] && j === candi[1][1]) cls = "bingo-candidate-2";
+          else if (candi.length > 2 && i === candi[2][0] && j === candi[2][1]) cls = "bingo-candidate-3";
         }
 
         tds.push(
           <td key={`block${i}${j}`}>
-            <div className={`bingo-block ${cls}`} onClick={() => {clickBingo(i, j)}}>
+            <div className={`bingo-block ${cls}`} onClick={() => { clickBingo(i, j) }}>
               {inner}
-              { stillListening ? 
+              {stillListening ?
                 (<div className="bingo-coord">
                   {`${i + 1} ${j + 1}`}
                 </div>) : null
@@ -390,21 +390,21 @@ function App() {
 
   const transNum = (x) => {
     x = `${x}`.replace(/\s+/g, '');
-    if(["일", "하나", "1", 1, "열"].includes(x)) return 1;
-    if(["이", "둘", "2", 2, "스물"].includes(x)) return 2;
-    if(["삼", "셋", "3", 3, "서른"].includes(x)) return 3;
-    if(["사", "넷", "4", 4, "마흔"].includes(x)) return 4;
-    if(["오", "다섯", "5", 5, "쉰"].includes(x)) return 5;
+    if (["일", "하나", "1", 1, "열"].includes(x)) return 1;
+    if (["이", "둘", "2", 2, "스물"].includes(x)) return 2;
+    if (["삼", "셋", "3", 3, "서른"].includes(x)) return 3;
+    if (["사", "넷", "4", 4, "마흔"].includes(x)) return 4;
+    if (["오", "다섯", "5", 5, "쉰"].includes(x)) return 5;
     return 0;
   }
 
   const transDoubleNum = (x) => {
     x = `${x}`.replace(/\s+/g, '');
-    if(x.length < 2) return;
-    if(x.length === 2) return clickBingo(transNum(x[0]) -1 , transNum(x[1]) - 1);
-    if(x.split("십").length === 2) return clickBingo(transNum(x.split("십")[0]) -1 , transNum(x.split("십")[1]) - 1);
-    if(transNum(x[0]) > 0) return clickBingo(transNum(x[0]) -1 , transNum(x.slice(1, x.length)) - 1);
-    if(transNum(x.slice(0, 2)) > 0) return clickBingo(transNum(x.slice(0, 2)) -1 , transNum(x.slice(2, x.length)) - 1);
+    if (x.length < 2) return;
+    if (x.length === 2) return clickBingo(transNum(x[0]) - 1, transNum(x[1]) - 1);
+    if (x.split("십").length === 2) return clickBingo(transNum(x.split("십")[0]) - 1, transNum(x.split("십")[1]) - 1);
+    if (transNum(x[0]) > 0) return clickBingo(transNum(x[0]) - 1, transNum(x.slice(1, x.length)) - 1);
+    if (transNum(x.slice(0, 2)) > 0) return clickBingo(transNum(x.slice(0, 2)) - 1, transNum(x.slice(2, x.length)) - 1);
     return;
   }
 
@@ -423,7 +423,7 @@ function App() {
     },
     {
       command: '폭탄 :i :j',
-      callback: (i, j) => clickBingo(transNum(i) -1 , transNum(j) - 1)
+      callback: (i, j) => clickBingo(transNum(i) - 1, transNum(j) - 1)
     },
     {
       command: '폭탄 :x',
@@ -443,14 +443,14 @@ function App() {
   } = useSpeechRecognition({ commands });
 
   const handleSpeech = () => {
-    if(stillListening) {
+    if (stillListening) {
       setStillListening(false);
       SpeechRecognition.stopListening();
       resetTranscript();
     }
     else {
       setStillListening(true);
-      SpeechRecognition.startListening({ 
+      SpeechRecognition.startListening({
         continuous: false,
         language: 'ko'
       });
@@ -515,9 +515,9 @@ function App() {
 
 
   useEffect(() => {
-    if((!listening) && stillListening) {
+    if ((!listening) && stillListening) {
       resetTranscript();
-      SpeechRecognition.startListening({ 
+      SpeechRecognition.startListening({
         continuous: false,
         language: 'ko'
       });
@@ -532,18 +532,6 @@ function App() {
             <div className="message-warning">
               {`※ 처음 오셨다면 아래 문답을 먼저 읽어주세요!`}
             </div>
-            <div className="link-container">
-              <div className="link-icon">
-                <Link href="https://ialy1595.me/" underline="none" color="white">
-                  <FontAwesomeIcon icon={faHome} />
-                </Link>
-              </div>
-              <div className="link-icon">
-                <Link href="https://github.com/ialy1595/kouku-saton-bingo" underline="none" color="white">
-                  <FontAwesomeIcon icon={faGithub} />
-                </Link>
-              </div>
-            </div>
           </div>
           <div className="button-container">
             <div className="button-wrap">
@@ -552,8 +540,8 @@ function App() {
             <div className="button-wrap">
               <Button variant="contained" className="btn" onClick={cancleBingo}>취소</Button>
             </div>
-            <FormControlLabel className="check" control={<Checkbox checked={isInanna} onChange={handleInanna} style={{color:'white'}}/>} label="이난나" />
-            <FormControlLabel className="check" control={<Checkbox checked={isHell} onChange={handleHell} style={{color:'white'}}/>} label="헬난이도" />
+            <FormControlLabel className="check" control={<Checkbox checked={isInanna} onChange={handleInanna} style={{ color: 'white' }} />} label="이난나" />
+            <FormControlLabel className="check" control={<Checkbox checked={isHell} onChange={handleHell} style={{ color: 'white' }} />} label="헬난이도" />
           </div>
           <div className="slider-container">
             <div className="slider-desc">
@@ -570,7 +558,7 @@ function App() {
             </div>
           </div>
           <div className="button-container">
-            { browserSupportsSpeechRecognition ? 
+            {browserSupportsSpeechRecognition ?
               (<div className="speech">
                 <FormControlLabel control={<Switch checked={stillListening} onChange={handleSpeech} />} label="음성 인식" />
                 <div className="speech-script">{transcript}</div>
@@ -578,10 +566,10 @@ function App() {
               (<div className="message-warning">
                 {`브라우저가 음성 인식을 지원하지 않습니다.`}
               </div>)
-            }          
+            }
           </div>
           <div className="message-desc">
-            {`${round < 2 ? ((round === 0 && isHell) ? "특수 해골" : "초기 해골") : `${round - 1}번째 폭탄`} 놓을 차례${(!isInanna) && (round % 3 === 1) && (round > 1)? " (무적용 빙고 해야됨!)" : ""}`}
+            {`${round < 2 ? ((round === 0 && isHell) ? "특수 해골" : "초기 해골") : `${round - 1}번째 폭탄`} 놓을 차례${(!isInanna) && (round % 3 === 1) && (round > 1) ? " (무적용 빙고 해야됨!)" : ""}`}
           </div>
           <div className="message-warning">
             {`${warnMsg}`}
@@ -593,15 +581,27 @@ function App() {
         {desc()}
         <div className="dona-wrap">
           <div className="dona">
-            <div className="message-dona">후원하기</div>
-            <div className="dona-box-wrap">
-              <a href="https://qr.kakaopay.com/FCxYaD9Ja" target="_blank" className="dona-box-kakao">kakao</a>
-              <a href="https://toss.me/ialy1595" target="_blank" className="dona-box-toss">toss</a>
+            <div class="message-dona">정보</div>
+            <div class="link-container">이 사이트는 개인의 Github page로 호스팅 중이며 도메인 기간이 만료될 경우 예고없이 접속이 중지될 수 있습니다.</div>
+            <div class="about">
+              <div className="link-container">
+                <div class="desc-answer">원작자 정보</div>
+                <div className="link-icon">
+                  <Link href="https://ialy1595.me/" underline="none" color="white">
+                    <FontAwesomeIcon icon={faHome} />
+                  </Link>
+                </div>
+                <div className="link-icon">
+                  <Link href="https://github.com/ialy1595/kouku-saton-bingo" underline="none" color="white">
+                    <FontAwesomeIcon icon={faGithub} />
+                  </Link>
+                </div>
+              </div>
             </div>
-          </div>          
+          </div>
         </div>
-      </Container>
-    </div>
+      </Container >
+    </div >
   );
 }
 
