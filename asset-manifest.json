@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/kouku-saton-bingo/static/css/main.86037081.css",
-    "main.js": "/kouku-saton-bingo/static/js/main.cdd99ffa.js",
-    "static/js/787.a26bef00.chunk.js": "/kouku-saton-bingo/static/js/787.a26bef00.chunk.js",
-    "index.html": "/kouku-saton-bingo/index.html",
-    "main.86037081.css.map": "/kouku-saton-bingo/static/css/main.86037081.css.map",
-    "main.cdd99ffa.js.map": "/kouku-saton-bingo/static/js/main.cdd99ffa.js.map",
-    "787.a26bef00.chunk.js.map": "/kouku-saton-bingo/static/js/787.a26bef00.chunk.js.map"
+    "main.css": "/static/css/main.86037081.css",
+    "main.js": "/static/js/main.ad10ef92.js",
+    "static/js/787.a26bef00.chunk.js": "/static/js/787.a26bef00.chunk.js",
+    "index.html": "/index.html",
+    "main.86037081.css.map": "/static/css/main.86037081.css.map",
+    "main.ad10ef92.js.map": "/static/js/main.ad10ef92.js.map",
+    "787.a26bef00.chunk.js.map": "/static/js/787.a26bef00.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.86037081.css",
-    "static/js/main.cdd99ffa.js"
+    "static/js/main.ad10ef92.js"
   ]
 }
