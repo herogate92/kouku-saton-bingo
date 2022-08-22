@@ -15,6 +15,7 @@
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
     "caniuse-lite": "^1.0.30001258",
+    "gh-pages": "^4.0.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-scripts": "^5.0.1",
@@ -25,10 +26,12 @@
     "web-vitals": "^1.0.1"
   },
   "scripts": {
-    "start": "HTTPS=true react-scripts start",
+    "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+	"predeploy": "npm run build",
+	"deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": [
@@ -47,5 +50,6 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  }
+  },
+  "homepage": "https://herogate92.github.io/kouku-saton-bingo"
 }
