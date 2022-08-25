@@ -581,7 +581,7 @@ function App() {
         {desc()}
         <div className="dona-wrap">
           <div className="dona">
-            <div class="message-dona">정보</div>
+            <div class="message-dona">빙파고 정보</div>
             <div class="link-container">이 사이트는 개인의 Github page로 호스팅 중이며 도메인 기간이 만료될 경우 예고없이 접속이 중지될 수 있습니다.</div>
             <div class="about">
               <div className="link-container">
